@@ -4,20 +4,6 @@
       "route": "/*",
       "serve": "/index.html"
     }
-  ],
-  "cors": {
-    "allowedOrigins": [
-      "https://justdrinkbackend-c4f8a3fgg8ehgxfd.westeurope-01.azurewebsites.net"
-    ],
-    "allowedHeaders": [
-      "*"
-    ],
-    "allowedMethods": [
-      "GET",
-      "POST",
-      "PUT",
-      "DELETE",
-      "OPTIONS"
-    ]
-  }
+  ]
+ 
 }
