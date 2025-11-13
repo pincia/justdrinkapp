@@ -1,6 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const API_BASE = import.meta.env.VITE_API_URL;
+const BASE_URL = `${API_BASE}/auth`;
+
 type AuthContextType = {
     token: string | null;
     isAuthenticated: boolean;
@@ -31,7 +34,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, []);
 
     const login = async (email: string, password: string) => {
-        const res = await fetch("/api/auth/login", {
+        const res = await fetch("/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
@@ -45,7 +48,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     const logout = () => {
-        fetch("/api/auth/logout", { method: "POST", credentials: "include" }).catch(() => {});
+        fetch("/logout", { method: "POST", credentials: "include" }).catch(() => {});
         localStorage.removeItem("accessToken");
         setToken(null);
         navigate("/signin", { replace: true });
@@ -56,7 +59,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (token) headers.set("Authorization", `Bearer ${token}`);
         let res = await fetch(input, { ...init, headers, credentials: "include" });
         if (res.status === 401) {
-            const r = await fetch("/api/auth/refresh", { method: "POST", credentials: "include" });
+            const r = await fetch("/refresh", { method: "POST", credentials: "include" });
             if (r.ok) {
                 const j = await r.json();
                 localStorage.setItem("accessToken", j.accessToken);
