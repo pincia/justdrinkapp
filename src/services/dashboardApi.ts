@@ -20,7 +20,7 @@ export async function getNextEvents(): Promise<DashboardEventItem[]> {
 }
 
 export async function getOfferStats(): Promise<DashboardOfferMonthlyStats[]> {
-  const res = await fetch(`${BASE_URL}/offers/monthly`);
+  const res = await fetch(`${BASE_URL}/offers/stats`);
   return res.json();
 }
 
