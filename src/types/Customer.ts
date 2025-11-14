@@ -1,34 +1,58 @@
 export interface CustomerListItemDto {
   id: number;
-  name: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+
   email?: string;
   phone?: string;
   customerType: number;
-  taxCodeOrVat?: string;
   isActive: boolean;
 }
 
-export interface CustomerDetailDto extends CustomerListItemDto {
+
+export interface CustomerDetailDto {
+  id: number;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+
+  birthDate?: string;
+  birthPlace?: string;
+
+  email?: string;
+  phone?: string;
   address?: string;
   city?: string;
   province?: string;
   zipCode?: string;
+
+  customerType: number;
+  taxCodeOrVat?: string;
   notes?: string;
+  isActive: boolean;
 }
+
 
 export interface CustomerCreateDto {
-  name: string;
+  firstName: string;
+  lastName: string;
+  birthDate?: string;
+  birthPlace?: string;
+
   email?: string;
   phone?: string;
   address?: string;
   city?: string;
   province?: string;
   zipCode?: string;
+
   customerType: number;
   taxCodeOrVat?: string;
   notes?: string;
   isActive: boolean;
 }
+
 
 export enum CustomerType {
   Private = 0,

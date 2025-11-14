@@ -5,6 +5,7 @@ import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import CustomerForm from "./CustomerForm";
 import { getCustomerById } from "../../services/customersApi";
 import { CustomerDetailDto } from "../../types/Customer";
+import CustomerFilesPanel from "../../components/customerFiles/CustomerFilesPanel";
 
 export default function CustomerDetail() {
   const { id } = useParams();
@@ -32,6 +33,7 @@ export default function CustomerDetail() {
       <PageMeta title="Customer Detail" description="View customer details" />
       <PageBreadcrumb pageTitle="Customer Detail" />
       <CustomerForm initialData={customer} readOnly />
+      <CustomerFilesPanel customerId={customer.id} />
     </div>
   );
 }

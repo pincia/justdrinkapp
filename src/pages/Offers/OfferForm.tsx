@@ -213,6 +213,18 @@ const [pricelists, setPricelists] = useState<PricelistListItemDto[]>([]);
     }));
   };
 
+// Aggiorna il prezzo personalizzato
+const updateItemPrice = (id: number, price: number) => {
+  if (isReadOnly) return;
+
+  setForm(prev => ({
+    ...prev,
+    items: prev.items.map(i =>
+      i.packageId === id ? { ...i, unitPrice: price } : i
+    ),
+  }));
+};
+
   // ========================= SUBMIT =========================
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -243,7 +255,7 @@ const [pricelists, setPricelists] = useState<PricelistListItemDto[]>([]);
                 }
                 options={customers.map((c) => ({
                   value: String(c.id),
-                  label: c.name,
+                  label: c.firstName + ' ' + c.lastName,
                 }))}
                 placeholder="Seleziona cliente"
                 onChange={(v) =>
@@ -431,62 +443,84 @@ const [pricelists, setPricelists] = useState<PricelistListItemDto[]>([]);
           </div>
 
           {/* ======================= PACCHETTI ======================= */}
-          <div className="md:col-span-2">
-            <Label>Pacchetti</Label>
+<div className="md:col-span-2">
+  <Label>Pacchetti</Label>
 
-            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-3 mt-2">
-              {packages.map((p) => {
-                const selected = form.items.some(
-                  (i) => i.packageId === p.id
-                );
+  <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-3 mt-2">
+    {packages.map(p => {
+      const item = form.items.find(i => i.packageId === p.id);
+      const selected = !!item;
 
-                return (
-                  <div
-                    key={`pkg-${p.id}-${selected}`}
-                    className="border rounded-lg p-3"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium">{p.name}</span>
-                      <Switch
-                        label=""
-                        defaultChecked={selected}
-                        disabled={isReadOnly}
-                        onChange={(checked) =>
-                          togglePackage(p, checked)
-                        }
-                      />
-                    </div>
-
-                    <p className="text-sm text-gray-500">{p.description}</p>
-
-                    <div className="mt-2 text-sm">
-                      € {p.defaultPrice.toFixed(2)} /{" "}
-                      {p.priceType === "PerPerson" ? "persona" : "forfait"}
-                    </div>
-
-                    {selected && (
-                      <div className="mt-3">
-                        <Label>Quantità</Label>
-                        <Input
-                          type="number"
-                          min="1"
-                          value={
-                            form.items.find((i) => i.packageId === p.id)
-                              ?.quantity ?? 1
-                          }
-                          onChange={(e) =>
-                            updateQty(p.id, Number(e.target.value))
-                          }
-                          disabled={isReadOnly}
-                          className="w-24"
-                        />
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+      return (
+        <div
+          key={`pkg-${p.id}-${selected}`}
+          className="border rounded-lg p-3 bg-white dark:bg-white/[0.05]"
+        >
+          {/* Header Pacchetto */}
+          <div className="flex items-center justify-between">
+            <span className="font-medium">{p.name}</span>
+            <Switch
+              label=""
+              defaultChecked={selected}
+              disabled={isReadOnly}
+              onChange={checked => togglePackage(p, checked)}
+            />
           </div>
+
+          {/* Descrizione */}
+          <p className="text-sm text-gray-500">{p.description}</p>
+
+          {/* Prezzo base */}
+          <div className="mt-2 text-sm">
+            € {p.defaultPrice.toFixed(2)} /{" "}
+            {p.priceType === "PerPerson" ? "persona" : "forfait"}
+          </div>
+
+          {/* Se è selezionato → mostra quantità e prezzo */}
+          {selected && (
+            <div className="mt-3 space-y-3">
+              {/* Quantità */}
+              <div>
+                <Label>Quantità</Label>
+                <Input
+                  type="number"
+                  min="1"
+                  value={item?.quantity ?? 1}
+                  onChange={e =>
+                    updateQty(p.id, Number(e.target.value) || 1)
+                  }
+                  disabled={isReadOnly}
+                  className="w-24"
+                />
+              </div>
+
+              {/* Prezzo personalizzato */}
+              <div>
+                <Label>Prezzo personalizzato (€)</Label>
+                <Input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={item?.unitPrice ?? p.defaultPrice}
+                  onChange={e =>
+                    updateItemPrice(p.id, Number(e.target.value) || 0)
+                  }
+                  disabled={isReadOnly}
+                  className="w-32"
+                />
+
+                <p className="text-xs text-gray-500 mt-1">
+                  Prezzo listino: € {p.defaultPrice.toFixed(2)}
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    })}
+  </div>
+</div>
+
         </div>
 
         {/* SUBMIT */}

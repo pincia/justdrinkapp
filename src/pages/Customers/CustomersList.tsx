@@ -96,7 +96,7 @@ export default function CustomersList() {
                 {customers.map((c) => (
                   <TableRow key={c.id}>
                     <TableCell className="px-5 py-3 font-medium text-gray-800 dark:text-white/90">
-                      {c.name}
+                      {c.fullName}
                     </TableCell>
                     <TableCell>{c.email || "-"}</TableCell>
                     <TableCell>{c.phone || "-"}</TableCell>

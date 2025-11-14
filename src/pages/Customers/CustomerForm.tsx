@@ -86,15 +86,26 @@ export default function CustomerForm({
       >
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
-            <Label>Name</Label>
-            <Input
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              placeholder="Mario Rossi"
-              disabled={isReadOnly}
-            />
-          </div>
+  <Label>First Name</Label>
+  <Input
+    name="firstName"
+    value={form.firstName}
+    onChange={handleChange}
+    placeholder="Mario"
+    disabled={isReadOnly}
+  />
+</div>
+
+<div>
+  <Label>Last Name</Label>
+  <Input
+    name="lastName"
+    value={form.lastName}
+    onChange={handleChange}
+    placeholder="Rossi"
+    disabled={isReadOnly}
+  />
+</div>
 
           <div>
             <Label>Email</Label>
@@ -173,7 +184,27 @@ export default function CustomerForm({
               disabled={isReadOnly}
             />
           </div>
+          <div>
+  <Label>Birth Date</Label>
+  <Input
+    type="date"
+    name="birthDate"
+    value={form.birthDate || ""}
+    onChange={handleChange}
+    disabled={isReadOnly}
+  />
+</div>
 
+<div>
+  <Label>Birth Place</Label>
+  <Input
+    name="birthPlace"
+    value={form.birthPlace || ""}
+    onChange={handleChange}
+    placeholder="Firenze"
+    disabled={isReadOnly}
+  />
+</div>
           <div>
             <Label>Customer Type</Label>
             <Select
@@ -193,6 +224,7 @@ export default function CustomerForm({
             />
           </div>
         </div>
+
 
         <div>
           <Label>Notes</Label>
