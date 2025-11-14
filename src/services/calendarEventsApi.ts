@@ -5,7 +5,7 @@ import {
 } from "../types/Calendar";
 
 // Legge l'URL base dalle env di Vite
-const API_BASE = import.meta.env.VITE_API_URL; // /api in dev, https://.../api in prod
+const API_BASE = import.meta.env.VITE_API_BASE_URL; // /api in dev, https://.../api in prod
 const BASE_URL = `${API_BASE}/calendarevents`;
 
 export async function getCalendarEvents(): Promise<CalendarEventDto[]> {

@@ -1,6 +1,6 @@
 import { CustomerListItemDto, CustomerDetailDto, CustomerCreateDto } from "../types/Customer";
 
-const API_BASE = import.meta.env.VITE_API_URL;
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 const BASE_URL = `${API_BASE}/customers`;
 export async function getCustomers(search?: string): Promise<CustomerListItemDto[]> {
   const url = search ? `${BASE_URL}?search=${encodeURIComponent(search)}` : BASE_URL;
