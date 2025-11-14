@@ -500,7 +500,6 @@ const updateItemPrice = (id: number, price: number) => {
                 <Input
                   type="number"
                   min="0"
-                  step="0.01"
                   value={item?.unitPrice ?? p.defaultPrice}
                   onChange={e =>
                     updateItemPrice(p.id, Number(e.target.value) || 0)

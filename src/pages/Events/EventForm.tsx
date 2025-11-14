@@ -167,7 +167,7 @@ export default function EventForm({ initialData, onSubmit, submitting, readOnly 
             {isReadOnly ? (
               <Input
                 value={
-                  customers.find((c) => c.id === form.customerId)?.name ||
+                  customers.find((c) => c.id === form.customerId)?.lastName ||
                   initialData?.customerName ||
                   "-"
                 }
@@ -177,7 +177,7 @@ export default function EventForm({ initialData, onSubmit, submitting, readOnly 
               <Select
                 options={customers.map((c) => ({
                   value: String(c.id),
-                  label: c.name,
+                  label: c.firstName + ' ' + c.lastName,
                 }))}
                 placeholder="Select customer"
                 onChange={(val) =>

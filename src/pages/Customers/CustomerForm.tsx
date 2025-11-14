@@ -16,7 +16,8 @@ type Props = {
 };
 
 const defaultData: CustomerCreateDto = {
-  name: "",
+  firstName: "",
+  lastName:"",
   email: "",
   phone: "",
   address: "",
