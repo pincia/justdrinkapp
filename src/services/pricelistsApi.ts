@@ -8,7 +8,7 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL;
 const BASE_URL = `${API_BASE}/pricelists`;
 
 export async function getPricelists(): Promise<PricelistListItemDto[]> {
-  const res = await fetch(BASE_URL);s
+  const res = await fetch(BASE_URL);
   if (!res.ok) throw new Error("Errore nel caricamento dei listini");
   return res.json();
 }
