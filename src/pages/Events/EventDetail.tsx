@@ -5,6 +5,8 @@ import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import EventForm from "./EventForm";
 import { getEventById } from "../../services/eventsApi";
 import { EventDetailDto } from "../../types/Event";
+import ComponentCard from "../../components/common/ComponentCard";
+import EventPayments from "../../components/ui/payments/EventPayments";
 
 export default function EventDetail() {
   const { id } = useParams();
@@ -24,7 +26,32 @@ export default function EventDetail() {
     <div className="p-6 space-y-6">
       <PageMeta title="Event Details" description="View event information" />
       <PageBreadcrumb pageTitle="Event Details" />
+
+      {/* FORM SOLO LETTURA */}
       <EventForm initialData={event} readOnly />
+
+      {/* RIEPILOGO IMPORTI */}
+      <ComponentCard title="Riepilogo Pagamenti">
+        <div className="space-y-2 text-sm">
+          <p>
+            <strong>Totale Pagato:</strong>{" "}
+            € {event.paidAmount?.toFixed(2) ?? "0.00"}
+          </p>
+          <p>
+            <strong>Da Pagare:</strong>{" "}
+            € {event.remainingAmount?.toFixed(2) ?? "0.00"}
+          </p>
+          <p>
+            <strong>Numero Pagamenti:</strong>{" "}
+            {event.payments?.length ?? 0}
+          </p>
+        </div>
+      </ComponentCard>
+
+      {/* TABELLA PAGAMENTI */}
+      <ComponentCard title="Pagamenti">
+        <EventPayments eventId={event.id} />
+      </ComponentCard>
     </div>
   );
 }

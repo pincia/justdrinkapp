@@ -1,3 +1,5 @@
+import { PaymentDetailDto } from "./Payment";
+
 // src/types/Event.ts
 export enum EventType {
   Wedding = 0,
@@ -41,6 +43,11 @@ export interface EventDetailDto {
   address?: string;
   createdAt: string;
   updatedAt?: string;
+
+  // 👇 NUOVI CAMPI
+  paidAmount: number;
+  remainingAmount: number;
+  payments: PaymentDetailDto[]; 
 }
 
 export interface EventCreateDto {

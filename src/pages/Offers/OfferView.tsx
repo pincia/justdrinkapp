@@ -8,6 +8,7 @@ import Button from "../../components/ui/button/Button";
 import { PencilIcon } from "lucide-react";
 import OfferForm from "./OfferForm";
 import Select from "../../components/form/Select";
+import { useSnackbar } from "../../context/SnackbarContext";;
 
 const statusOptions: { value: OfferStatus; label: string }[] = [
   { value: "Draft", label: "Bozza" },
@@ -32,6 +33,7 @@ export default function OfferView() {
   const [offer, setOffer] = useState<OfferDetail | null>(null);
   const [status, setStatus] = useState<OfferStatus | "">("");
   const [savingStatus, setSavingStatus] = useState(false);
+  const { showSnackbar } = useSnackbar();
 
   useEffect(() => {
     async function load() {
@@ -55,9 +57,10 @@ export default function OfferView() {
       setSavingStatus(true);
       await updateOfferStatus(Number(id), status);
       setOffer((prev) => (prev ? { ...prev, status } : prev));
+      showSnackbar("Stato aggiornato correttamente!", "success");
     } catch (err) {
       console.error(err);
-      alert("Errore nel cambio stato preventivo");
+      showSnackbar("Errore aggiornamento stato", "error");
     } finally {
       setSavingStatus(false);
     }
@@ -78,7 +81,7 @@ export default function OfferView() {
       </div>
 
       {/* Stato & info sintetiche */}
-      <ComponentCard title={`Preventivo ${offer.code}`}>
+      <ComponentCard title={`Preventivo`}>
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="space-y-1">
             <p>

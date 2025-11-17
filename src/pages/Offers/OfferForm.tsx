@@ -88,8 +88,6 @@ const [pricelists, setPricelists] = useState<PricelistListItemDto[]>([]);
  useEffect(() => {
   if (!initialData) return; // non resettare il form!
 
-  console.log("🟦 [MAP] initialData cambiata, preparo mapping...");
-
   const items: OfferItemCreateDto[] =
     initialData.items?.map(i => ({
       packageId: i.packageId,

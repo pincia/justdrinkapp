@@ -44,9 +44,9 @@ const Radio: React.FC<RadioProps> = ({
             ? "border-brand-500 bg-brand-500"
             : "bg-transparent border-gray-300 dark:border-gray-700"
         } ${
-          disabled
-            ? "bg-gray-100 dark:bg-gray-700 border-gray-200 dark:border-gray-700"
-            : ""
+         disabled
+  ? "text-gray-500 dark:text-gray-400 cursor-not-allowed"
+  : "text-gray-700 dark:text-gray-300"
         }`}
       >
         <span
