@@ -7,7 +7,7 @@ import {
   HorizontaLDots,
   TableIcon,
   UserCircleIcon,
-  PlugInIcon, // se non esiste puoi sostituirlo con BoxCubeIcon o PlugInIcon
+  PlugInIcon,
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
 import SidebarWidget from "./SidebarWidget";
@@ -30,46 +30,39 @@ const navItems: NavItem[] = [
     name: "Calendario",
     path: "/calendar",
   },
+
+  // --------------------------
+  //  NO SUBMENU
+  // --------------------------
   {
     icon: <UserCircleIcon />,
     name: "Clienti",
-    subItems: [
-      { name: "Tutti i Clienti", path: "/customers" },
-      { name: "Crea Nuovo Cliente", path: "/customers/new" },
-    ],
+    path: "/customers",
   },
   {
     icon: <CalenderIcon />,
     name: "Eventi",
-    subItems: [
-      { name: "Tutti gli Eventi", path: "/events" },
-      { name: "Crea Nuovo Evento", path: "/events/new" },
-    ],
+    path: "/events",
   },
   {
     icon: <TableIcon />,
     name: "Preventivi",
-    subItems: [
-      { name: "Tutti i Preventivi", path: "/offers" },
-      { name: "Crea Nuovo Preventivo", path: "/offers/new" },
-    ],
+    path: "/offers",
   },
+  
+
+  // --------------------------
+  //  CONFIGURAZIONE (SUBMENU)
+  // --------------------------
   {
-    icon: <PlugInIcon />, // oppure BoxCubeIcon se non hai un’icona ingranaggio
+    icon: <PlugInIcon />,
     name: "Configurazione",
     subItems: [
-      {
-        name: "Pacchetti",
-        path: "/packages",
-      },
-      {
-        name: "Listini Prezzi",
-        path: "/pricelists",
-      },
-      {
-        name: "Location",
-        path: "/locations",
-      },
+      { name: "Pacchetti", path: "/packages" },
+      { name: "Listini Prezzi", path: "/pricelists" },
+      { name: "Locations", path: "/locations" },
+      { name: "Planners", path: "/planners",},
+      { name: "Checklist Templates", path: "/checklist-templates" },
     ],
   },
 ];
@@ -87,6 +80,7 @@ const AppSidebar: React.FC = () => {
     [location.pathname]
   );
 
+  // Apri automaticamente il submenu di configurazione se attivo
   useEffect(() => {
     navItems.forEach((nav, index) => {
       if (nav.subItems?.some((s) => isActive(s.path))) {
@@ -162,7 +156,7 @@ const AppSidebar: React.FC = () => {
         </Link>
       </div>
 
-      {/* Menu principale */}
+      {/* Menu */}
       <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
         <nav className="mb-6">
           <h2
@@ -180,6 +174,7 @@ const AppSidebar: React.FC = () => {
           <ul className="flex flex-col gap-4">
             {navItems.map((nav, index) => (
               <li key={nav.name}>
+                {/* ---- SUBMENU ONLY FOR CONFIGURAZIONE ---- */}
                 {nav.subItems ? (
                   <>
                     <button
@@ -203,22 +198,24 @@ const AppSidebar: React.FC = () => {
                       >
                         {nav.icon}
                       </span>
+
                       {(isExpanded || isHovered || isMobileOpen) && (
-                        <span className="menu-item-text">{nav.name}</span>
-                      )}
-                      {(isExpanded || isHovered || isMobileOpen) && (
-                        <ChevronDownIcon
-                          className={`ml-auto w-5 h-5 transition-transform duration-200 ${
-                            openSubmenu === index
-                              ? "rotate-180 text-brand-500"
-                              : ""
-                          }`}
-                        />
+                        <>
+                          <span className="menu-item-text">{nav.name}</span>
+                          <ChevronDownIcon
+                            className={`ml-auto w-5 h-5 transition-transform duration-200 ${
+                              openSubmenu === index
+                                ? "rotate-180 text-brand-500"
+                                : ""
+                            }`}
+                          />
+                        </>
                       )}
                     </button>
+
                     {(isExpanded || isHovered || isMobileOpen) && (
                       <div
-                       ref={(el) => {
+                     ref={(el) => {
   subMenuRefs.current[`submenu-${index}`] = el;
 }}
                         className="overflow-hidden transition-all duration-300"
@@ -249,6 +246,7 @@ const AppSidebar: React.FC = () => {
                     )}
                   </>
                 ) : (
+                  /* ---- NORMAL LINKS ---- */
                   nav.path && (
                     <Link
                       to={nav.path}
@@ -267,6 +265,7 @@ const AppSidebar: React.FC = () => {
                       >
                         {nav.icon}
                       </span>
+
                       {(isExpanded || isHovered || isMobileOpen) && (
                         <span className="menu-item-text">{nav.name}</span>
                       )}
@@ -277,7 +276,8 @@ const AppSidebar: React.FC = () => {
             ))}
           </ul>
         </nav>
-        {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}
+
+        {(isExpanded || isHovered || isMobileOpen) && <SidebarWidget />}
       </div>
     </aside>
   );

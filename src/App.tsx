@@ -54,6 +54,15 @@ import PricelistsList from "./pages/Pricelists/PricelistsList.tsx";
 import PricelistCreate from "./pages/Pricelists/PricelistCreate.tsx";
 import PricelistDetail from "./pages/Pricelists/PricelistDetail.tsx";
 import PricelistEdit from "./pages/Pricelists/PricelistEdit.tsx";
+import PlannerList from "./pages/Planners/PlannerList.tsx";
+import PlannerDetail from "./pages/Planners/PlannerDetail.tsx";
+import PlannerCreate from "./pages/Planners/PlannerCreate.tsx";
+import PlannerEdit from "./pages/Planners/PlannerEdit.tsx";
+
+// CHECKLIST TEMPLATES (ADMIN)
+import ChecklistTemplatesList from "./pages/ChecklistTemplates/ChecklistTemplatesList";
+import ChecklistTemplateCreate from "./pages/ChecklistTemplates/ChecklistTemplateCreate";
+import ChecklistTemplateEdit from "./pages/ChecklistTemplates/ChecklistTemplateEdit";
 
 export default function App() {
   return (
@@ -120,11 +129,24 @@ export default function App() {
           <Route path="packages/:id" element={<PackageView />} />
           <Route path="packages/:id/edit" element={<PackageEdit />} />
 
-        <Route path="pricelists" element={<PricelistsList />} />
-        <Route path="pricelists/new" element={<PricelistCreate />} />
-        <Route path="pricelists/:id" element={<PricelistDetail />} />
-        <Route path="pricelists/:id/edit" element={<PricelistEdit />} />
+          {/* PRICELISTS */}
+          <Route path="pricelists" element={<PricelistsList />} />
+          <Route path="pricelists/new" element={<PricelistCreate />} />
+          <Route path="pricelists/:id" element={<PricelistDetail />} />
+          <Route path="pricelists/:id/edit" element={<PricelistEdit />} />
 
+          {/* PLANNERS */}
+          <Route path="/planners" element={<PlannerList />} />
+          <Route path="/planners/new" element={<PlannerCreate />} />
+          <Route path="/planners/:id" element={<PlannerDetail />} />
+          <Route path="/planners/:id/edit" element={<PlannerEdit />} />
+          {/* CHECKLIST TEMPLATES */}
+
+          <Route path="checklist-templates" element={<ChecklistTemplatesList />} />
+          <Route path="checklist-templates/new" element={<ChecklistTemplateCreate />} />
+          <Route path="checklist-templates/:id/edit" element={<ChecklistTemplateEdit />} />
+
+          
         </Route>
 
         {/* 404 */}

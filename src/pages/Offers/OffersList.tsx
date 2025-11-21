@@ -35,7 +35,7 @@ export default function OffersList() {
   }
 
   async function handleDelete(id: number) {
-    if (!confirm("Delete this offer?")) return;
+    if (!confirm("Canecllare questo preventivo?")) return;
     try {
       await deleteOffer(id);
       setOffers((prev) => prev.filter((o) => o.id !== id));
@@ -47,23 +47,23 @@ export default function OffersList() {
   return (
     <div className="p-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-        <h1 className="text-2xl font-bold">Offers</h1>
+        <h1 className="text-2xl font-bold">Preventivi</h1>
 
         <div className="flex items-center gap-3">
           <div className="relative">
             <SearchIcon className="absolute left-3 top-2.5 size-4 text-gray-400" />
             <input
               type="text"
-              placeholder="Search..."
+              placeholder="Cerca..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="border rounded-lg pl-9 pr-3 py-2 text-sm"
             />
           </div>
-          <Button onClick={load} variant="outline" size="sm">Search</Button>
+          <Button onClick={load} variant="outline" size="sm">Cerca</Button>
           <Link to="/offers/new">
             <Button variant="primary" size="sm" startIcon={<PlusIcon className="size-4" />}>
-              New Offer
+              Nuovo preventivo
             </Button>
           </Link>
         </div>
@@ -77,21 +77,21 @@ export default function OffersList() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableCell isHeader>Code</TableCell>
-                  <TableCell isHeader>Customer</TableCell>
-                  <TableCell isHeader>Event</TableCell>
-                  <TableCell isHeader>Status</TableCell>
-                  <TableCell isHeader>Total</TableCell>
-                  <TableCell isHeader>Expiration</TableCell>
-                  <TableCell isHeader className="text-center">Actions</TableCell>
+                  <TableCell isHeader>Cliente</TableCell>
+                  <TableCell isHeader>Evento</TableCell>
+                   <TableCell isHeader>Data Evento</TableCell>
+                  <TableCell isHeader>Stato Offerta</TableCell>
+                  <TableCell isHeader>Totale Offerta</TableCell>
+                  <TableCell isHeader>Scadenza</TableCell>
+                  <TableCell isHeader className="text-center">Azioni</TableCell>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {offers.map((o) => (
                   <TableRow key={o.id}>
-                    <TableCell>{o.code}</TableCell>
                     <TableCell>{o.customerName}</TableCell>
-                    <TableCell>{o.eventName || "-"}</TableCell>
+                    <TableCell>{o.eventTypeName || "-"}</TableCell>
+                   <TableCell>{o.eventDate ? new Date(o.eventDate).toLocaleDateString() : "-"}</TableCell>
                     <TableCell>
                       <Badge color={o.status === "Accepted" ? "success" : o.status === "Draft" ? "warning" : "primary"}>
                         {o.status}
@@ -102,10 +102,10 @@ export default function OffersList() {
                     <TableCell className="text-center">
                       <div className="flex justify-center gap-2">
                         <Link to={`/offers/${o.id}`}>
-                          <Button size="sm" variant="outline" startIcon={<EyeIcon className="size-4" />}>View</Button>
+                          <Button size="sm" variant="outline" startIcon={<EyeIcon className="size-4" />}>Visualizza</Button>
                         </Link>
                         <Link to={`/offers/${o.id}/edit`}>
-                          <Button size="sm" variant="outline" startIcon={<PencilIcon className="size-4" />}>Edit</Button>
+                          <Button size="sm" variant="outline" startIcon={<PencilIcon className="size-4" />}>Modifica</Button>
                         </Link>
                         <Button
                           size="sm"
@@ -113,7 +113,7 @@ export default function OffersList() {
                           startIcon={<TrashIcon className="size-4 text-red-500" />}
                           onClick={() => handleDelete(o.id)}
                         >
-                          Delete
+                          Elimina
                         </Button>
                       </div>
                     </TableCell>

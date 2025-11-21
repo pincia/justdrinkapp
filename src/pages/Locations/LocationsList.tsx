@@ -77,20 +77,20 @@ export default function LocationsList() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableCell isHeader>Name</TableCell>
-                  <TableCell isHeader>City</TableCell>
-                  <TableCell isHeader>Province</TableCell>
-                  <TableCell isHeader>Status</TableCell>
-                  <TableCell isHeader className="text-center">Actions</TableCell>
+                  <TableCell isHeader>Nome</TableCell>
+                  <TableCell isHeader>Città</TableCell>
+                  <TableCell isHeader>Provincia</TableCell>
+                  <TableCell isHeader>Stato</TableCell>
+                  <TableCell isHeader className="text-center">Azioni</TableCell>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {locations.map((l) => (
                   <TableRow key={l.id}>
-                    <TableCell>{l.name}</TableCell>
-                    <TableCell>{l.city || "-"}</TableCell>
-                    <TableCell>{l.province || "-"}</TableCell>
-                    <TableCell>
+                    <TableCell  className="text-center">{l.name}</TableCell>
+                    <TableCell className="text-center">{l.city || "-"}</TableCell>
+                    <TableCell className="text-center">{l.province || "-"}</TableCell>
+                    <TableCell className="text-center">
                       <Badge color={l.isActive ? "success" : "error"}>
                         {l.isActive ? "Active" : "Inactive"}
                       </Badge>

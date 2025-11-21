@@ -22,7 +22,12 @@ export default function EventPayments({ eventId }: { eventId: number }) {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-semibold">Pagamenti</h3>
-        <Button onClick={() => setEditingPayment(null) || setOpenDialog(true)}>
+    <Button
+  onClick={() => {
+    setEditingPayment(null);
+    setOpenDialog(true);
+  }}
+>
           Aggiungi Pagamento
         </Button>
       </div>

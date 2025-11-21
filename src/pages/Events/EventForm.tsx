@@ -10,6 +10,8 @@ import { getCustomers } from "../../services/customersApi";
 import { getLocations } from "../../services/locationsApi";
 import { CustomerListItemDto } from "../../types/Customer";
 import { LocationListItemDto } from "../../types/Location";
+import { PlannerListItemDto } from "../../types/Planner";
+import { getPlanners } from "../../services/plannersApi";
 
 type Props = {
   initialData?: EventDetailDto;
@@ -22,8 +24,7 @@ const defaultData: EventCreateDto = {
   name: "",
   description: "",
   startDate: new Date().toISOString().substring(0, 10),
-  endDate: new Date().toISOString().substring(0, 10),
-  eventType: EventType.Wedding,
+  eventType: EventType.Matrimonio,
   status: EventStatus.Planned,
   contactPerson: "",
   contactPhone: "",
@@ -35,6 +36,8 @@ export default function EventForm({ initialData, onSubmit, submitting, readOnly 
   const [form, setForm] = useState<EventCreateDto>(defaultData);
   const [customers, setCustomers] = useState<CustomerListItemDto[]>([]);
   const [locations, setLocations] = useState<LocationListItemDto[]>([]);
+  const [planners, setPlanners] = useState<PlannerListItemDto[]>([]);
+
   const isReadOnly = !!readOnly;
 
   useEffect(() => {
@@ -46,13 +49,14 @@ export default function EventForm({ initialData, onSubmit, submitting, readOnly 
     }
   }, [initialData]);
 
-  // 🔹 Carica customers e locations
+  // 🔹 Carica clienti e location
   useEffect(() => {
     async function loadData() {
       try {
-        const [cust, loc] = await Promise.all([getCustomers(), getLocations()]);
+        const [cust, loc, pls] = await Promise.all([getCustomers(), getLocations(), getPlanners()]);
         setCustomers(cust);
         setLocations(loc);
+        setPlanners(pls);
       } catch (err) {
         console.error("Error loading dropdowns:", err);
       }
@@ -76,41 +80,42 @@ export default function EventForm({ initialData, onSubmit, submitting, readOnly 
 
   // Helpers per etichette
   const eventTypeLabel = (t: EventType) =>
-    ({ 0: "Wedding", 1: "Corporate", 2: "Private Party", 3: "Other" }[t]);
+    ({ 1: "Matrimonio", 2: "Evento Aziendale", 3: "Festa Privata", 4: "Altro" ,5: "MixologyExperience" }[t]);
+
   const eventStatusLabel = (s: EventStatus) =>
-    ({ 0: "Planned", 1: "Confirmed", 2: "Completed", 3: "Cancelled" }[s]);
+    ({ 0: "Pianificato", 1: "Confermato", 2: "Completato", 3: "Annullato" }[s]);
 
   return (
-    <ComponentCard title={isReadOnly ? "Event Details" : "Event Information"}>
+    <ComponentCard title={isReadOnly ? "Dettagli Evento" : "Informazioni Evento"}>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
 
           {/* Nome evento */}
           <div>
-            <Label>Name</Label>
+            <Label>Nome</Label>
             <Input
               name="name"
               value={form.name}
               onChange={handleChange}
-              placeholder="Wedding Party"
+              placeholder="Nome evento"
               disabled={isReadOnly}
             />
           </div>
 
           {/* Tipo evento */}
           <div>
-            <Label>Event Type</Label>
+            <Label>Tipo Evento</Label>
             {isReadOnly ? (
               <Input value={eventTypeLabel(form.eventType)} disabled />
             ) : (
               <Select
                 options={[
-                  { value: "0", label: "Wedding" },
-                  { value: "1", label: "Corporate" },
-                  { value: "2", label: "Private Party" },
-                  { value: "3", label: "Other" },
+                  { value: "1", label: "Matrimonio" },
+                  { value: "2", label: "Evento Aziendale" },
+                  { value: "3", label: "Evento Privato" },
+                  { value: "4", label: "Evento Pubblico" },
                 ]}
-                placeholder="Select type"
+                placeholder="Seleziona tipo"
                 onChange={(val) =>
                   setForm((prev) => ({ ...prev, eventType: Number(val) }))
                 }
@@ -120,18 +125,18 @@ export default function EventForm({ initialData, onSubmit, submitting, readOnly 
 
           {/* Stato evento */}
           <div>
-            <Label>Status</Label>
+            <Label>Stato</Label>
             {isReadOnly ? (
               <Input value={eventStatusLabel(form.status)} disabled />
             ) : (
               <Select
                 options={[
-                  { value: "0", label: "Planned" },
-                  { value: "1", label: "Confirmed" },
-                  { value: "2", label: "Completed" },
-                  { value: "3", label: "Cancelled" },
+                  { value: "0", label: "Pianificato" },
+                  { value: "1", label: "Confermato" },
+                  { value: "2", label: "Completato" },
+                  { value: "3", label: "Annullato" },
                 ]}
-                placeholder="Select status"
+                placeholder="Seleziona stato"
                 onChange={(val) =>
                   setForm((prev) => ({ ...prev, status: Number(val) }))
                 }
@@ -141,7 +146,7 @@ export default function EventForm({ initialData, onSubmit, submitting, readOnly 
 
           {/* Date */}
           <div>
-            <Label>Start Date</Label>
+            <Label>Data Evento</Label>
             <Input
               type="date"
               name="startDate"
@@ -150,20 +155,9 @@ export default function EventForm({ initialData, onSubmit, submitting, readOnly 
               disabled={isReadOnly}
             />
           </div>
+          {/* Cliente */}
           <div>
-            <Label>End Date</Label>
-            <Input
-              type="date"
-              name="endDate"
-              value={form.endDate.substring(0, 10)}
-              onChange={handleChange}
-              disabled={isReadOnly}
-            />
-          </div>
-
-          {/* 🔹 Customer Dropdown */}
-          <div>
-            <Label>Customer</Label>
+            <Label>Cliente</Label>
             {isReadOnly ? (
               <Input
                 value={
@@ -177,9 +171,9 @@ export default function EventForm({ initialData, onSubmit, submitting, readOnly 
               <Select
                 options={customers.map((c) => ({
                   value: String(c.id),
-                  label: c.firstName + ' ' + c.lastName,
+                  label: c.firstName + " " + c.lastName,
                 }))}
-                placeholder="Select customer"
+                placeholder="Seleziona cliente"
                 onChange={(val) =>
                   setForm((prev) => ({ ...prev, customerId: Number(val) }))
                 }
@@ -187,7 +181,36 @@ export default function EventForm({ initialData, onSubmit, submitting, readOnly 
             )}
           </div>
 
-          {/* 🔹 Location Dropdown */}
+          {/* Planner */}
+          <div>
+            <Label>Wedding Planner / Organizzatore</Label>
+
+            {isReadOnly ? (
+              <Input
+                value={initialData?.plannerName ?? "-"}
+                disabled
+              />
+            ) : (
+              <Select
+                options={[
+                  { value: "", label: "Nessuno" },
+                  ...planners.map((p) => ({
+                    value: String(p.id),
+                    label: p.fullName + (p.companyName ? " (" + p.companyName + ")" : "")
+                  }))
+                ]}
+                placeholder="Seleziona planner"
+                onChange={(v) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    plannerId: v ? Number(v) : undefined
+                  }))
+                }
+              />
+            )}
+          </div>
+
+          {/* Location */}
           <div>
             <Label>Location</Label>
             {isReadOnly ? (
@@ -205,7 +228,7 @@ export default function EventForm({ initialData, onSubmit, submitting, readOnly 
                   value: String(l.id),
                   label: l.name,
                 }))}
-                placeholder="Select location"
+                placeholder="Seleziona location"
                 onChange={(val) =>
                   setForm((prev) => ({ ...prev, locationId: Number(val) }))
                 }
@@ -215,17 +238,17 @@ export default function EventForm({ initialData, onSubmit, submitting, readOnly 
 
           {/* Contatti */}
           <div>
-            <Label>Contact Person</Label>
+            <Label>Referente</Label>
             <Input
               name="contactPerson"
               value={form.contactPerson || ""}
               onChange={handleChange}
-              placeholder="Contact person name"
+              placeholder="Nome referente"
               disabled={isReadOnly}
             />
           </div>
           <div>
-            <Label>Contact Phone</Label>
+            <Label>Telefono Referente</Label>
             <Input
               name="contactPhone"
               value={form.contactPhone || ""}
@@ -238,13 +261,13 @@ export default function EventForm({ initialData, onSubmit, submitting, readOnly 
 
         {/* Descrizione */}
         <div>
-          <Label>Description</Label>
+          <Label>Descrizione</Label>
           <TextArea
             value={form.description || ""}
             onChange={(value) =>
               !isReadOnly && setForm({ ...form, description: value })
             }
-            placeholder="Optional notes..."
+            placeholder="Note opzionali..."
             rows={5}
             disabled={isReadOnly}
           />
@@ -253,7 +276,7 @@ export default function EventForm({ initialData, onSubmit, submitting, readOnly 
         {!isReadOnly && (
           <div className="flex justify-end">
             <Button variant="primary" disabled={!!submitting}>
-              {submitting ? "Saving..." : "Save Event"}
+              {submitting ? "Salvataggio..." : "Salva Evento"}
             </Button>
           </div>
         )}

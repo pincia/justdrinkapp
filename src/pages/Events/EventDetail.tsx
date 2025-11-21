@@ -7,6 +7,8 @@ import { getEventById } from "../../services/eventsApi";
 import { EventDetailDto } from "../../types/Event";
 import ComponentCard from "../../components/common/ComponentCard";
 import EventPayments from "../../components/ui/payments/EventPayments";
+import EventChecklistPanel from "../Checklist/EventChecklistPanel";
+import EntityFilesPanel from "../../components/entityFiles/EntityFilesPanel";
 
 export default function EventDetail() {
   const { id } = useParams();
@@ -20,12 +22,12 @@ export default function EventDetail() {
     load();
   }, [id]);
 
-  if (!event) return <div className="p-6 text-gray-500">Loading...</div>;
+  if (!event) return <div className="p-6 text-gray-500">Caricamento...</div>;
 
   return (
     <div className="p-6 space-y-6">
-      <PageMeta title="Event Details" description="View event information" />
-      <PageBreadcrumb pageTitle="Event Details" />
+      <PageMeta title="Dettagli Evento" description="Visualizza le informazioni dell'evento" />
+      <PageBreadcrumb pageTitle="Dettagli Evento" />
 
       {/* FORM SOLO LETTURA */}
       <EventForm initialData={event} readOnly />
@@ -48,9 +50,19 @@ export default function EventDetail() {
         </div>
       </ComponentCard>
 
+      {/* CHECKLIST EVENTO */}
+      <ComponentCard title="Checklist Evento">
+        <EventChecklistPanel eventId={event.id} />
+      </ComponentCard>
+
       {/* TABELLA PAGAMENTI */}
       <ComponentCard title="Pagamenti">
         <EventPayments eventId={event.id} />
+      </ComponentCard>
+
+      {/* FILES EVENTO */}
+      <ComponentCard title="Documenti Evento">
+        <EntityFilesPanel entityType="Event" entityId={event.id} />
       </ComponentCard>
     </div>
   );

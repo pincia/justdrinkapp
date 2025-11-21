@@ -1,6 +1,7 @@
-export interface CustomerFileDto {
+export interface EntityFileDto {
   id: number;
-  customerId: number;
+  entityType: string;
+  entityId: number;
   fileName: string;
   url: string;
   size: number;

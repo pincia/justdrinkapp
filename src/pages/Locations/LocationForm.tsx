@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Label from "../../components/form/Label";
 import Input from "../../components/form/input/InputField";
-import TextArea from "../../components/form/input/TextArea";
 import Switch from "../../components/form/switch/Switch";
 import Button from "../../components/ui/button/Button";
 import ComponentCard from "../../components/common/ComponentCard";
@@ -57,7 +56,7 @@ export default function LocationForm({ initialData, onSubmit, submitting, readOn
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
-            <Label>Name</Label>
+            <Label>Nome</Label>
             <Input name="name" value={form.name} onChange={handleChange} disabled={isReadOnly} />
           </div>
 
@@ -67,28 +66,28 @@ export default function LocationForm({ initialData, onSubmit, submitting, readOn
           </div>
 
           <div>
-            <Label>Phone</Label>
+            <Label>Telefono</Label>
             <Input name="phone" value={form.phone || ""} onChange={handleChange} disabled={isReadOnly} />
           </div>
 
           <div>
-            <Label>City</Label>
+            <Label>Città</Label>
             <Input name="city" value={form.city || ""} onChange={handleChange} disabled={isReadOnly} />
           </div>
 
           <div>
-            <Label>Province</Label>
+            <Label>Provincia</Label>
             <Input name="province" value={form.province || ""} onChange={handleChange} disabled={isReadOnly} />
           </div>
 
           <div>
-            <Label>ZIP Code</Label>
+            <Label>CAP</Label>
             <Input name="zipCode" value={form.zipCode || ""} onChange={handleChange} disabled={isReadOnly} />
           </div>
 
           <div className="md:col-span-2">
-            <Label>Address</Label>
-            <TextArea value={form.address || ""} onChange={(v) => !isReadOnly && setForm({ ...form, address: v })} />
+            <Label>Indirizzo</Label>
+            <Input name="address" value={form.address || ""} onChange={handleChange} disabled={isReadOnly} />
           </div>
 
           <div>

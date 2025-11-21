@@ -10,18 +10,19 @@ export type OfferStatus =
   | "Cancelled";
   
 export type DiscountType = "None" | "Percent" | "Fixed";
-export type EventType = "Wedding" | "Party" | "Corporate" | "Birthday";
+export type EventType = "Matrimonio" | "Privato" | "Aziendale" | "MixologyExperience" | "Pubblico";
 // === DTOs BASE ===
 
 export interface OfferListItem {
   id: number;
   code: string;
   customerName: string;
-  eventName?: string;
+  eventTypeName?: string;
   status: OfferStatus;
   totalAmount: number;
   expirationDate?: string;
   createdAt: string;
+  eventDate?: string;
 }
 
 // === DETAIL ===
@@ -49,7 +50,8 @@ export interface OfferDetail {
   expirationDate?: string;
   createdAt: string;
   updatedAt?: string;
-
+  plannerId?: number;
+  plannerName?: string;
   items: OfferItemDetail[];
   paymentTerms: OfferPaymentTerm[];
   attachments?: OfferAttachmentDto[];
@@ -61,7 +63,6 @@ export interface OfferCreateDto {
   eventId?: number;
   pricelistId?: number;
 
-  // NEW
   locationId?: number;
   eventDate?: string;
   eventType: EventType;
@@ -70,10 +71,19 @@ export interface OfferCreateDto {
   discountValue: number;
   notes?: string;
   expirationDate?: string;
-
+  plannerId?: number;
   items: OfferItemCreateDto[];
   paymentTerms: OfferPaymentTermCreateDto[];
 }
+
+// Estendi l'interfaccia aggiungendo optional name-fields
+export interface OfferCreateDto {
+  customerName?: string;
+  plannerName?: string;
+  pricelistName?: string;
+  locationName?: string;
+}
+
 
 // === ITEMS ===
 export interface OfferItemCreateDto {

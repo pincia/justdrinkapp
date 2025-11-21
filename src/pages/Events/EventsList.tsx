@@ -35,58 +35,57 @@ export default function EventsList() {
   }
 
   async function handleDelete(id: number) {
-    if (!confirm("Are you sure you want to delete this event?")) return;
+    if (!confirm("Sei sicuro di voler eliminare questo evento?")) return;
     try {
       await deleteEvent(id);
       setEvents((prev) => prev.filter((e) => e.id !== id));
     } catch {
-      alert("Failed to delete event");
+      alert("Impossibile eliminare l'evento");
     }
   }
 
   return (
     <div className="p-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-        <h1 className="text-2xl font-bold mb-3 sm:mb-0">Events</h1>
+        <h1 className="text-2xl font-bold mb-3 sm:mb-0">Eventi</h1>
 
         <div className="flex items-center gap-3">
           <div className="relative">
             <SearchIcon className="absolute left-3 top-2.5 size-4 text-gray-400" />
             <input
               type="text"
-              placeholder="Search..."
+              placeholder="Cerca..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="border border-gray-300 rounded-lg pl-9 pr-3 py-2 text-sm"
             />
           </div>
           <Button variant="outline" size="sm" onClick={load}>
-            Search
+            Cerca
           </Button>
           <Link to="/events/new">
             <Button variant="primary" size="sm" startIcon={<PlusIcon className="size-4" />}>
-              New Event
+              Nuovo Evento
             </Button>
           </Link>
         </div>
       </div>
 
       {loading ? (
-        <div className="text-center text-gray-500 py-10">Loading...</div>
+        <div className="text-center text-gray-500 py-10">Caricamento...</div>
       ) : (
         <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
           <div className="max-w-full overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableCell isHeader>Name</TableCell>
-                  <TableCell isHeader>Type</TableCell>
-                  <TableCell isHeader>Status</TableCell>
-                  <TableCell isHeader>Start</TableCell>
-                  <TableCell isHeader>End</TableCell>
-                  <TableCell isHeader>Customer</TableCell>
+                  <TableCell isHeader>Nome</TableCell>
+                  <TableCell isHeader>Tipo</TableCell>
+                  <TableCell isHeader>Stato</TableCell>
+                  <TableCell isHeader>Data</TableCell>
+                  <TableCell isHeader>Cliente</TableCell>
                   <TableCell isHeader>Location</TableCell>
-                  <TableCell isHeader className="text-center">Actions</TableCell>
+                  <TableCell isHeader className="text-center">Azioni</TableCell>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -111,19 +110,18 @@ export default function EventsList() {
                       </Badge>
                     </TableCell>
                     <TableCell>{new Date(e.startDate).toLocaleDateString()}</TableCell>
-                    <TableCell>{new Date(e.endDate).toLocaleDateString()}</TableCell>
                     <TableCell>{e.customerName || "-"}</TableCell>
                     <TableCell>{e.locationName || "-"}</TableCell>
                     <TableCell className="text-center">
                       <div className="flex justify-center gap-2">
                         <Link to={`/events/${e.id}`}>
                           <Button size="sm" variant="outline" startIcon={<EyeIcon className="size-4" />}>
-                            View
+                            Vedi
                           </Button>
                         </Link>
                         <Link to={`/events/${e.id}/edit`}>
                           <Button size="sm" variant="outline" startIcon={<PencilIcon className="size-4" />}>
-                            Edit
+                            Modifica
                           </Button>
                         </Link>
                         <Button
@@ -132,7 +130,7 @@ export default function EventsList() {
                           startIcon={<TrashIcon className="size-4 text-red-500" />}
                           onClick={() => handleDelete(e.id)}
                         >
-                          Delete
+                          Elimina
                         </Button>
                       </div>
                     </TableCell>

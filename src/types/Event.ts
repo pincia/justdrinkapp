@@ -2,10 +2,11 @@ import { PaymentDetailDto } from "./Payment";
 
 // src/types/Event.ts
 export enum EventType {
-  Wedding = 0,
-  Corporate = 1,
-  PrivateParty = 2,
-  Other = 3,
+  Matrimonio = 1,
+  Aziendale = 2,
+  Privato = 3,
+  Pubblico = 4,
+  MixologyExperience = 5
 }
 
 export enum EventStatus {
@@ -21,7 +22,6 @@ export interface EventListItemDto {
   eventType: EventType;
   status: EventStatus;
   startDate: string;
-  endDate: string;
   customerName?: string;
   locationName?: string;
 }
@@ -31,7 +31,6 @@ export interface EventDetailDto {
   name: string;
   description?: string;
   startDate: string;
-  endDate: string;
   eventType: EventType;
   status: EventStatus;
   contactPerson?: string;
@@ -43,24 +42,24 @@ export interface EventDetailDto {
   address?: string;
   createdAt: string;
   updatedAt?: string;
-
-  // 👇 NUOVI CAMPI
   paidAmount: number;
   remainingAmount: number;
   payments: PaymentDetailDto[]; 
+  plannerId?: number;
+  plannerName?: string;
 }
 
 export interface EventCreateDto {
   name: string;
   description?: string;
   startDate: string;
-  endDate: string;
   eventType: EventType;
   status: EventStatus;
   contactPerson?: string;
   contactPhone?: string;
   customerId: number;
   locationId?: number;
+   plannerId?: number;
 }
 
 export type EventUpdateDto = EventCreateDto;
